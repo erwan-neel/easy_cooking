@@ -152,30 +152,51 @@ class Administration extends CI_Controller {
 
 		} else {
 
-		//Ajout d'un commentaire
-		//Ajout d'un deuxième commentaire
+			// On charge les modèles
+			$this->load->model('UtilisateurManager');
+			$this->load->model('RecetteManager');
 
-		$this->load->model('UtilisateurManager');
-		$this->load->model('RecetteManager');
+			if($_SESSION['niveau']==1) {
 
-		// On récupère l'id de l'utilisateur :
-		$utilisateurManager = new UtilisateurManager();
-		$id_utilisateur = $utilisateurManager->get_id($_SESSION['login'])->id_utilisateur;
+				//On récupère l'ensemble des recettes du site :
+				$recetteManager = new RecetteManager();
+				$recettes = $recetteManager->get_all_recettes();
 
-		//On récupère les recettes qui lui sont associées :
-		$recetteManager = new RecetteManager();
-		$recettes = $recetteManager->get_recettes($id_utilisateur);
+				$data = array();
 
-		$data = array();
+				// Si l'on envoie un message de confirmation de suppression d'une recette depuis la méthode "supprimer" :
+				if($this->session->flashdata('message')) { $data['confirmation'] = $this->session->flashdata('message'); }
 
-		// Si l'on envoie un message de confirmation de suppression d'une recette depuis la méthode "supprimer" :
-		if($this->session->flashdata('message')) { $data['confirmation'] = $this->session->flashdata('message'); }
+				$data['recettes'] = $recettes;
+				$data['active'] = "administrer";
+				$data['menu_categories'] = $this->menu_categories;
 
-		$data['recettes'] = $recettes;
-		$data['active'] = "administrer";
-		$data['menu_categories'] = $this->menu_categories;
+				$this->layout->view('admin_utilisateur', $data);
 
-		$this->layout->view('admin_utilisateur', $data);
+			}else {
+
+				// On récupère l'id de l'utilisateur :
+				$utilisateurManager = new UtilisateurManager();
+				$id_utilisateur = $utilisateurManager->get_id($_SESSION['login'])->id_utilisateur;
+
+				//On récupère les recettes qui lui sont associées :
+				$recetteManager = new RecetteManager();
+				$recettes = $recetteManager->get_recettes($id_utilisateur);
+
+				$data = array();
+
+				// Si l'on envoie un message de confirmation de suppression d'une recette depuis la méthode "supprimer" :
+				if($this->session->flashdata('message')) { $data['confirmation'] = $this->session->flashdata('message'); }
+
+				$data['recettes'] = $recettes;
+				$data['active'] = "administrer";
+				$data['menu_categories'] = $this->menu_categories;
+
+				$this->layout->view('admin_utilisateur', $data);
+
+			}
+
+			
 
 		}
 

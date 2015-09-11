@@ -120,11 +120,27 @@
 
 										if(isset($active) && $active=="administrer") {
 
-											echo '<li><a href="'.site_url("administration/administrer").'" class="active">Administration</a></li>';
+											if($_SESSION['niveau']==1) {
+
+												echo '<li><a href="'.site_url("administration/administrer").'" class="active">Administration</a></li>';
+
+											}else {
+
+												echo '<li><a href="'.site_url("administration/administrer").'" class="active">Mes recettes</a></li>';
+
+											}											
 
 										} else {
 
-											echo '<li><a href="'.site_url("administration/administrer").'">Administration</a></li>';
+											if($_SESSION['niveau']==1) {
+
+												echo '<li><a href="'.site_url("administration/administrer").'">Administration</a></li>';
+
+											} else {
+
+												echo '<li><a href="'.site_url("administration/administrer").'">Mes recettes</a></li>';
+
+											}											
 
 										}
 																				
@@ -132,7 +148,7 @@
 									}											
 
 								?>
-								<li><a href="#">Contact</a></li>
+								
 							</ul>
 						</div>
 					</div>

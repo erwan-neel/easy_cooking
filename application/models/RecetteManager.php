@@ -12,6 +12,18 @@ class RecetteManager extends CI_Model {
 
 	}
 
+	//Permet de récupérer toutes les recettes du site
+	public function get_all_recettes() {
+
+		$query = $this->db->query("SELECT t1.id_recette, t1.titre, t2.nom_categorie, t3.nom_categorie as nom_sous_categorie, t4.login FROM recette as t1
+								   LEFT JOIN categorie as t2 ON t1.id_categorie = t2.id_categorie
+								   LEFT JOIN categorie as t3 ON t1.id_sous_categorie = t3.id_categorie
+								   LEFT JOIN utilisateur as t4 ON t1.id_utilisateur = t4.id_utilisateur");
+
+		return $query->result();
+
+	}
+
 	// Retourne la recette sous forme d'objet
 	public function get_recette_object($id) {
 

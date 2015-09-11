@@ -89,6 +89,11 @@
 						<table class="table_admin" id="tableau_recette">
 							<thead>
 								<tr class="tr_titre">
+									<?php
+										if($_SESSION['niveau']==1){
+											echo '<th>Login</th>';
+										}
+									?>
 									<th>Recette</th>
 									<th>Catégorie</th>
 									<th>Sous-Catégorie</th>
@@ -98,7 +103,55 @@
 							</thead>
 							<tbody>
 								<?php 
-									foreach ($recettes as $recette) {
+
+									if($_SESSION['niveau']==1) {
+
+										foreach ($recettes as $recette) {
+										
+										echo "<tr>";
+
+										if($recette->login) {
+
+											echo "<td>".$recette->login."</td>";
+
+										}else {
+
+											echo "<td>Inconnu</td>";
+
+										}										
+
+										echo "<td><a href=\"".site_url('recettes/detail/'.$recette->id_recette)."\">".$recette->titre."</a></td>";
+
+										if($recette->nom_categorie) {
+
+											echo "<td>".$recette->nom_categorie."</td>";
+
+										} else {
+
+											echo "<td>aucune</td>";
+
+										}
+
+										if($recette->nom_sous_categorie) {
+
+											echo "<td>".$recette->nom_sous_categorie."</td>";
+
+										} else {
+
+											echo "<td>aucune</td>";
+
+										}
+										
+
+										echo '<td><a href="'.site_url('administration/modifier/'.$recette->id_recette).'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></td>';
+										echo '<td><a href="'.site_url('administration/supprimer/'.$recette->id_recette).'" id="supprimer_recette" onclick="return confirm(\'Voulez-vous vraiment supprimer cette recette ?\');"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td></tr>';
+										
+
+									}
+
+									}else {
+
+										foreach ($recettes as $recette) {
 										
 										echo "<tr><td><a href=\"".site_url('recettes/detail/'.$recette->id_recette)."\">".$recette->titre."</a></td>";
 
@@ -128,6 +181,10 @@
 										
 
 									}
+
+									}
+
+									
 								?>								
 							</tbody>
 						</table>
